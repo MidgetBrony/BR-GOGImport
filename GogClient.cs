@@ -90,6 +90,9 @@ public class GogClient
     {
         _steamCachePath = BoxroomCacheLocator.Find();
         Console.WriteLine($"Using BOXROOM cache: {_steamCachePath}");
+        Console.WriteLine(OperatingSystem.IsLinux()
+            ? "GOG games will launch through Heroic."
+            : "GOG games will launch through GOG Galaxy.");
         if (!await LoadTokenAsync())
         {
             await LoginAsync();
@@ -190,6 +193,11 @@ public class GogClient
 
     private static void WriteProgress(int current, int total) =>
         Console.Write($"\rImporting GOG library: {current} / {total}   ");
+
+    private static string GetLaunchUri(int gogId) =>
+        OperatingSystem.IsLinux()
+            ? $"heroic://launch/gog/{gogId}"
+            : $"goggalaxy://openGameView/{gogId}";
 
     private int AllocateAppId()
     {
@@ -436,7 +444,7 @@ public class GogClient
         game.AppType = "custom";
         game.Source = "gog";
         game.StoreId = gogId;
-        game.LaunchExePath = $"goggalaxy://openGameView/{gogId}";
+        game.LaunchExePath = GetLaunchUri(gogId);
 
         string folder = Path.Combine(_steamCachePath, appId.ToString());
 
@@ -532,7 +540,7 @@ public class GogClient
                 if (meta is null)
                     continue;
 
-                string launchUri = $"goggalaxy://openGameView/{gogId}";
+                string launchUri = GetLaunchUri(gogId);
                 bool alreadyCurrent =
                     string.Equals(meta["LaunchExePath"]?.GetValue<string>(), launchUri, StringComparison.OrdinalIgnoreCase) &&
                     string.Equals(meta["AppType"]?.GetValue<string>(), "custom", StringComparison.OrdinalIgnoreCase) &&

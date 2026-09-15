@@ -19,10 +19,15 @@ On Linux, it finds `owned_games.json` in native Unity, Steam, custom Steam-libra
 
 ## GOG launching
 
-Imported games use `goggalaxy://openGameView/<product-id>`. FamilyOwned 2.2.0 or newer converts that address into GOG Galaxy's direct `runGame` command when Galaxy is installed.
+The importer chooses the launcher for the operating system it is running on:
+
+- Windows uses `goggalaxy://openGameView/<product-id>`. FamilyOwned 2.2.0 or newer converts that address into GOG Galaxy's direct `runGame` command when Galaxy is installed.
+- Linux uses `heroic://launch/gog/<product-id>`. Install Heroic Games Launcher and sign in to GOG before launching an imported game.
+
+Running the importer again updates launch addresses on GOG games it imported previously, so Linux imports are migrated from Galaxy to Heroic automatically.
 
 ## Current limitations
 
-- GOG Galaxy must be installed to launch imported games through Galaxy.
-- Linux and Proton behavior still needs live Steam Deck testing.
+- GOG Galaxy must be installed on Windows, or Heroic Games Launcher on Linux, to launch imported games.
+- Linux and Proton launching still needs live Steam Deck testing.
 - Metadata and artwork availability depend on GOG and the Boxroom Studio API.
