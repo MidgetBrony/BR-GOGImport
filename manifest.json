@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "type": "tool",
+  "experimental": true,
+  "id": "br-gogimport",
+  "name": "BR-GOGImport",
+  "author": "MidgetBrony",
+  "description": "Experimental GOG library importer for BOXROOM. It may break or behave unexpectedly.",
+  "repository": "https://github.com/MidgetBrony/BR-GOGImport",
+  "requirements": {},
+  "dependencies": [
+    {
+      "manifest": "https://github.com/MidgetBrony/BR-FamilyOwned",
+      "minimumVersion": "2.2.0",
+      "required": true
+    }
+  ],
+  "release": {
+    "provider": "github",
+    "assetWindows": "BR-GOGImport-v*-win-x64.zip",
+    "assetLinux": "BR-GOGImport-v*-linux-x64.zip",
+    "checksumAsset": "SHA256SUMS.txt",
+    "entryPointWindows": "BR-GOGImport.exe",
+    "entryPointLinux": "BR-GOGImport"
+  }
+}
