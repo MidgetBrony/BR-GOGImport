@@ -10,7 +10,7 @@
   "requirements": {},
   "dependencies": [
     {
-      "manifest": "https://github.com/MidgetBrony/BR-FamilyOwned",
+      "manifest": "https://raw.githubusercontent.com/MidgetBrony/BR-FamilyOwned/master/manifest.json",
       "minimumVersion": "2.2.0",
       "required": true
     }
