@@ -5,7 +5,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <AssemblyName>BR-GOGImport</AssemblyName>
     <Description>Experimental GOG library importer for BOXROOM</Description>
     <RepositoryUrl>https://github.com/MidgetBrony/BR-GOGImport</RepositoryUrl>

@@ -184,6 +184,8 @@ public class GogClient
         Console.WriteLine($"Complete: {imported} imported, {alreadyImported} already present, {missing} unavailable, {failed} failed.");
         if (firstFailure is not null)
             Console.WriteLine($"First error: {firstFailure}");
+
+        await UpdateOwnedGamesIndexAsync();
     }
 
     private static void WriteProgress(int current, int total) =>
@@ -554,6 +556,37 @@ public class GogClient
                 // Leave an invalid existing entry unchanged and continue the import.
             }
         }
+    }
+
+    private async Task UpdateOwnedGamesIndexAsync()
+    {
+        string ownedGamesPath = Path.Combine(_steamCachePath, "owned_games.json");
+        JsonObject root = File.Exists(ownedGamesPath)
+            ? JsonNode.Parse(await File.ReadAllTextAsync(ownedGamesPath)) as JsonObject
+                ?? throw new InvalidOperationException("BOXROOM's owned_games.json is invalid.")
+            : new JsonObject();
+
+        HashSet<int> appIds = [];
+        if (root["AppIds"] is JsonArray existingIds)
+        {
+            foreach (JsonNode? node in existingIds)
+            {
+                if (node is JsonValue value && value.TryGetValue<int>(out int appId))
+                    appIds.Add(appId);
+            }
+        }
+
+        foreach (int appId in LoadExistingImports().Values)
+            appIds.Add(appId);
+
+        root["AppIds"] = new JsonArray(appIds.OrderBy(id => id)
+            .Select(id => (JsonNode?)JsonValue.Create(id)).ToArray());
+        string temporaryPath = ownedGamesPath + ".gogimport.tmp";
+        await File.WriteAllTextAsync(temporaryPath, root.ToJsonString(new JsonSerializerOptions
+        {
+            WriteIndented = false
+        }));
+        File.Move(temporaryPath, ownedGamesPath, true);
     }
     public class ApiResponse
     {
